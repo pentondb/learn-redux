@@ -1,4 +1,4 @@
-var React = require('react');
+// var React = require('react');
 var ReactDOM = require('react-dom');
 var { Route, Router, IndexRoute, hashHistory } = require('react-router');
 
@@ -13,10 +13,10 @@ $(document).foundation();
 // App CSS
 require('style!css!sass!applicationStyles');
 
-ReactDOM.render(
-  <p>Boilerplate 3 Project - using React version {React.version}</p>,
-  document.getElementById('app')
-);
+// ReactDOM.render(
+//   <p>Boilerplate 3 Project - using React version {React.version}</p>,
+//   document.getElementById('app')
+// );
 
 // require('./redux-example.jsx');
 require('./redux-todo-example.jsx');
