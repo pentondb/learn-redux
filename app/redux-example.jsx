@@ -8,9 +8,24 @@ var reducer = (state = { name: 'Anonymous' }, action) => {
     // This is the ES5 way to provide a default state. The syntax used above in the parameters is the ES6 way to do the same-ish thing.
     // state = state || { name: 'Anonymous' };
 
-    return state;
+    switch (action.type) {
+        case 'CHANGE_NAME':
+            return {
+                ...state,
+                name: action.name,
+            };
+        default:
+            return state;
+    }
 };
 var store = redux.createStore(reducer);
 
 var currentState = store.getState();
 console.log('currentState', currentState);
+
+store.dispatch({
+    type: 'CHANGE_NAME',
+    name: 'Herman',
+});
+
+console.log('Name should be Herman', store.getState());
