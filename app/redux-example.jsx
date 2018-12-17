@@ -2,62 +2,59 @@ var redux = require('redux');
 
 console.log('Starting redux example');
 
-var stateDefault = {
-    name: 'Anonymous',
-    hobbies: [],
-    movies: []
-};
 var nextHobbyId = 1;
 var nextMovieId = 1;
 
-// redux.createStore accepts one argument, a pure function called a reducer.
-// The reducer takes your existing state and the action as arguments, and returns the new state.
-var reducer = (state = stateDefault, action) => {
-    // This is the ES5 way to provide a default state. The syntax used above in the parameters is the ES6 way to do the same-ish thing.
-    // state = state || { name: 'Anonymous' };
-
+var nameReducer = (state = 'Anonymous', action) => {
     switch (action.type) {
         case 'CHANGE_NAME':
-            return {
-                ...state,
-                name: action.name,
-            };
+            return action.name;
+        default:
+            return state;
+    };
+};
+
+var hobbiesReducer = (state = [], action) => {
+    switch (action.type) {
         case 'ADD_HOBBY':
-            return {
+            return [
                 ...state,
-                hobbies: [
-                    ...state.hobbies,
-                    {
-                        id: nextHobbyId++,
-                        hobby: action.hobby
-                    }]
-            };
+                {
+                    id: nextHobbyId++,
+                    hobby: action.hobby
+                }
+            ];
         case 'REMOVE_HOBBY':
-            return {
-                ...state,
-                hobbies: state.hobbies.filter(hobby => hobby.id !== action.id)
-            };
+            return state.filter(hobby => hobby.id !== action.id);
+        default:
+            return state;
+    };
+};
+
+var moviesReducer = (state = [], action) => {
+    switch (action.type) {
         case 'ADD_MOVIE':
-            return {
+            return [
                 ...state,
-                movies: [
-                    ...state.movies,
-                    {
-                        id: nextMovieId++,
-                        title: action.title,
-                        genre: action.genre,
-                    }
-                ]
-            };
+                {
+                    id: nextMovieId++,
+                    title: action.title,
+                    genre: action.genre,
+                }
+            ];
         case 'REMOVE_MOVIE':
-            return {
-                ...state,
-                movies: state.movies.filter(movie => movie.id !== action.id)
-            };
+            return state.filter(movie => movie.id !== action.id);
         default:
             return state;
     }
 };
+
+var reducer = redux.combineReducers({
+    name: nameReducer,
+    hobbies: hobbiesReducer,
+    movies: moviesReducer,
+});
+
 var store = redux.createStore(reducer, redux.compose(
     window.devToolsExtension ? window.devToolsExtension() : f => f
 ));
